@@ -19,6 +19,10 @@
         </activity>
         <service android:name=".service.ConfigDataPullService"
             android:exported="false"/>
+        <provider
+            android:authorities="com.bsunk.myhome"
+            android:name="com.bsunk.myhome.data.MyHomeProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

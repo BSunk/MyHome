@@ -1,6 +1,7 @@
 package com.bsunk.myhome.service;
 
 import android.app.IntentService;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.util.Log;
 
@@ -9,8 +10,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bsunk.myhome.data.MyHomeContract;
 import com.bsunk.myhome.helper.MySingleton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -29,7 +33,6 @@ public class ConfigDataPullService extends IntentService {
     protected void onHandleIntent(Intent workIntent) {
         // Gets data from the incoming Intent
         mRequestQueue = MySingleton.getInstance(getApplicationContext()).getRequestQueue();
-        //String dataString = workIntent.getDataString();
         getData();
 
     }
@@ -39,16 +42,33 @@ public class ConfigDataPullService extends IntentService {
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.v(LOG_TAG, response.toString());
+                        try {
+                            JSONArray states = response.getJSONArray("states");
+                            for(int i=0;i<states.length();i++) {
+                                JSONObject entity = states.getJSONObject(i);
+                                if(entity.getString("entity_id").contains("sensor.")) {
+                                    getSensorData(entity);
+                                }
+                                else if(entity.getString("entity_id").contains("media_player.")) {
+                                    getMediaPlayerData(entity);
+                                }
+                                else if(entity.getString("entity_id").contains("light.")) {
+                                    getLightsData(entity);
+                                }
+                            }
+                        }
+                        catch(JSONException e) {
+                            Log.e(LOG_TAG, e.toString());
+                        }
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.v(LOG_TAG, error.getMessage());
+                        Log.e(LOG_TAG, error.getMessage());
 
                     }
                 });
@@ -56,5 +76,76 @@ public class ConfigDataPullService extends IntentService {
         mRequestQueue.add(jsObjRequest);
     }
 
+
+    private void getLightsData(JSONObject entity) {
+        ContentValues lightsValues = new ContentValues();
+
+        try {
+            lightsValues.put(MyHomeContract.Lights.COLUMN_ENTITY_ID, entity.getString("entity_id"));
+            lightsValues.put(MyHomeContract.Lights.COLUMN_STATE, entity.getString("state"));
+            lightsValues.put(MyHomeContract.Lights.COLUMN_LAST_CHANGED, entity.getString("last_changed"));
+            JSONObject attributes = entity.getJSONObject("attributes");
+            if (attributes.has("brightness")) {
+                lightsValues.put(MyHomeContract.Lights.COLUMN_BRIGHTNESS, attributes.getString("brightness"));
+            }
+            if (attributes.has("color_temp")) {
+                lightsValues.put(MyHomeContract.Lights.COLUMN_COLOR_TEMP, attributes.getString("color_temp"));
+            }
+            if (attributes.has("friendly_name")) {
+                lightsValues.put(MyHomeContract.Lights.COLUMN_NAME, attributes.getString("friendly_name"));
+            }
+            if (entity.has("rgb_color")) {
+                JSONArray rgb = entity.getJSONArray("rgb_color");
+                String rgbString = rgb.getString(1) + " " + rgb.getString(2) + " " + rgb.getString(3);
+                lightsValues.put(MyHomeContract.Lights.COLUMN_RGB, rgbString);
+            }
+            getContentResolver().insert(MyHomeContract.Lights.CONTENT_URI, lightsValues);
+        }
+        catch(JSONException e) {
+            Log.e(LOG_TAG, e.toString());
+        }
+    }
+
+    private void getSensorData(JSONObject entity) {
+        ContentValues sensorValues = new ContentValues();
+
+        try {
+            sensorValues.put(MyHomeContract.Sensors.COLUMN_ENTITY_ID, entity.getString("entity_id"));
+            sensorValues.put(MyHomeContract.Sensors.COLUMN_STATE, entity.getString("state"));
+            sensorValues.put(MyHomeContract.Sensors.COLUMN_LAST_CHANGED, entity.getString("last_changed"));
+            JSONObject attributes = entity.getJSONObject("attributes");
+            if (attributes.has("icon")) {
+                sensorValues.put(MyHomeContract.Sensors.COLUMN_ICON, attributes.getString("icon"));
+            }
+            if (attributes.has("friendly_name")) {
+                sensorValues.put(MyHomeContract.Sensors.COLUMN_NAME, attributes.getString("friendly_name"));
+            }
+            if (attributes.has("unit_of_measurement")) {
+                sensorValues.put(MyHomeContract.Sensors.COLUMN_UNITS, attributes.getString("unit_of_measurement"));
+            }
+            getContentResolver().insert(MyHomeContract.Sensors.CONTENT_URI, sensorValues);
+        }
+        catch(JSONException e) {
+            Log.e(LOG_TAG, e.toString());
+        }
+    }
+
+    private void getMediaPlayerData(JSONObject entity) {
+        ContentValues mediaPlayerValues = new ContentValues();
+
+        try {
+            mediaPlayerValues.put(MyHomeContract.MediaPlayers.COLUMN_ENTITY_ID, entity.getString("entity_id"));
+            mediaPlayerValues.put(MyHomeContract.MediaPlayers.COLUMN_STATE, entity.getString("state"));
+            mediaPlayerValues.put(MyHomeContract.MediaPlayers.COLUMN_LAST_CHANGED, entity.getString("last_changed"));
+            JSONObject attributes = entity.getJSONObject("attributes");
+            if (attributes.has("friendly_name")) {
+                mediaPlayerValues.put(MyHomeContract.MediaPlayers.COLUMN_NAME, attributes.getString("friendly_name"));
+            }
+            getContentResolver().insert(MyHomeContract.MediaPlayers.CONTENT_URI, mediaPlayerValues);
+        }
+        catch(JSONException e) {
+            Log.e(LOG_TAG, e.toString());
+        }
+    }
 
 }

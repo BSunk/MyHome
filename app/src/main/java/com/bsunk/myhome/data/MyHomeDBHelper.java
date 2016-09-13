@@ -28,33 +28,33 @@ public class MyHomeDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        final String SQL_CREATE_LIGHTS_TABLE = "CREATE TABLE" + MyHomeContract.Lights.TABLE_NAME + " (" +
+        final String SQL_CREATE_LIGHTS_TABLE = "CREATE TABLE " + MyHomeContract.Lights.TABLE_NAME + " (" +
                 MyHomeContract.Lights.COLUMN_ID + " INTEGER PRIMARY KEY," +
                 MyHomeContract.Lights.COLUMN_ENTITY_ID + " TEXT NOT NULL," +
                 MyHomeContract.Lights.COLUMN_NAME + " TEXT," +
                 MyHomeContract.Lights.COLUMN_STATE + " TEXT," +
                 MyHomeContract.Lights.COLUMN_LAST_CHANGED + " TEXT," +
-                MyHomeContract.Lights.COLUMN_BRIGHTNESS + " INTEGER," +
+                MyHomeContract.Lights.COLUMN_BRIGHTNESS + " TEXT," +
                 MyHomeContract.Lights.COLUMN_COLOR_TEMP + " TEXT," +
-                MyHomeContract.Lights.COLUMN_RGB + " TEXT," +
+                MyHomeContract.Lights.COLUMN_RGB + " TEXT" +
                 " );";
 
-        final String SQL_CREATE_SENSORS_TABLE = "CREATE TABLE" + MyHomeContract.Sensors.TABLE_NAME + " (" +
+        final String SQL_CREATE_SENSORS_TABLE = "CREATE TABLE " + MyHomeContract.Sensors.TABLE_NAME + " (" +
                 MyHomeContract.Sensors.COLUMN_ID + " INTEGER PRIMARY KEY," +
                 MyHomeContract.Sensors.COLUMN_ENTITY_ID + " TEXT NOT NULL," +
                 MyHomeContract.Sensors.COLUMN_NAME + " TEXT," +
                 MyHomeContract.Sensors.COLUMN_ICON + " TEXT," +
                 MyHomeContract.Sensors.COLUMN_UNITS + " TEXT," +
                 MyHomeContract.Sensors.COLUMN_STATE + " TEXT," +
-                MyHomeContract.Sensors.COLUMN_LAST_CHANGED + " TEXT," +
+                MyHomeContract.Sensors.COLUMN_LAST_CHANGED + " TEXT" +
                 " );";
 
-        final String SQL_CREATE_MEDIA_PLAYERS_TABLE = "CREATE TABLE" + MyHomeContract.MediaPlayers.TABLE_NAME + " (" +
+        final String SQL_CREATE_MEDIA_PLAYERS_TABLE = "CREATE TABLE " + MyHomeContract.MediaPlayers.TABLE_NAME + " (" +
                 MyHomeContract.MediaPlayers.COLUMN_ID + " INTEGER PRIMARY KEY," +
                 MyHomeContract.MediaPlayers.COLUMN_ENTITY_ID + " TEXT NOT NULL," +
                 MyHomeContract.MediaPlayers.COLUMN_NAME + " TEXT," +
                 MyHomeContract.MediaPlayers.COLUMN_STATE + " TEXT," +
-                MyHomeContract.MediaPlayers.COLUMN_LAST_CHANGED + " TEXT," +
+                MyHomeContract.MediaPlayers.COLUMN_LAST_CHANGED + " TEXT" +
                 " );";
 
         sqLiteDatabase.execSQL(SQL_CREATE_LIGHTS_TABLE);
