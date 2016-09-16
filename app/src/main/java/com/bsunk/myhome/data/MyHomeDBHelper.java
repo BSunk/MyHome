@@ -38,6 +38,7 @@ public class MyHomeDBHelper extends SQLiteOpenHelper {
                 MyHomeContract.MyHome.COLUMN_COLOR_TEMP + " TEXT," +
                 MyHomeContract.MyHome.COLUMN_ICON + " TEXT," +
                 MyHomeContract.MyHome.COLUMN_UNITS + " TEXT," +
+                MyHomeContract.MyHome.COLUMN_TYPE + " TEXT," +
                 MyHomeContract.MyHome.COLUMN_RGB + " TEXT" +
                 " );";
 

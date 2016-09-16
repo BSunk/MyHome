@@ -22,7 +22,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     RecyclerView EntityRecyclerView;
     StaggeredGridLayoutManager sglm;
-    LightsAdapter lightsAdapter;
+    EntityAdapter adapter;
 
     public final int LOADER = 0;
 
@@ -37,7 +37,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         View rootView = inflater.inflate(R.layout.fragment_main_activity, container, false);
         EntityRecyclerView = (RecyclerView) rootView.findViewById(R.id.entity_recyclerview);
         sglm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        sglm.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         EntityRecyclerView.setLayoutManager(sglm);
+        adapter = new EntityAdapter(getContext(), null);
+        EntityRecyclerView.setAdapter(adapter);
         return rootView ;
     }
 
@@ -45,7 +48,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(LOADER, null, this);
-
     }
 
     @Override
@@ -60,9 +62,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        cursor.moveToFirst();
-        lightsAdapter = new LightsAdapter(getContext(), cursor);
-        EntityRecyclerView.setAdapter(lightsAdapter);
+        adapter.swapCursor(cursor);
     }
 
     @Override

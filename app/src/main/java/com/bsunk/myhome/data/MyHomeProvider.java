@@ -102,7 +102,7 @@ public class MyHomeProvider extends ContentProvider {
             case MYHOME: {
                 long _id = db.insert(MyHomeContract.MyHome.TABLE_NAME, null, values);
                 if ( _id > 0 )
-                    returnUri = MyHomeContract.MyHome.buildLightsUri(_id);
+                    returnUri = MyHomeContract.MyHome.buildUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;

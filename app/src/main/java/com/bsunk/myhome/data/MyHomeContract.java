@@ -13,7 +13,7 @@ public class MyHomeContract {
     public static final String CONTENT_AUTHORITY = "com.bsunk.myhome";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final String PATH_MYHOME = "myhome";
+    public static final String PATH_MYHOME = "my_home";
 
     public static final class MyHome implements BaseColumns {
 
@@ -26,6 +26,7 @@ public class MyHomeContract {
 
         public static final String TABLE_NAME = "myhome";
         public static final String COLUMN_ID = "_id";
+        public static final String COLUMN_TYPE = "type";
         public static final String COLUMN_ENTITY_ID = "entity_id";
         public static final String COLUMN_NAME = "friendly_name";
         public static final String COLUMN_STATE = "state";
@@ -36,7 +37,7 @@ public class MyHomeContract {
         public static final String COLUMN_ICON = "icon";
         public static final String COLUMN_UNITS = "units";
 
-        public static Uri buildLightsUri(long id) {
+        public static Uri buildUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
