@@ -12,35 +12,22 @@ import android.net.Uri;
  */
 public class MyHomeProvider extends ContentProvider {
 
-    static final int LIGHTS = 100;
-    static final int LIGHTS_WITH_ID = 101;
-    static final int SENSORS = 200;
-    static final int SENSORS_WITH_ID = 201;
-    static final int MEDIA_PLAYERS = 300;
-    static final int MEDIA_PLAYER_WITH_ID = 301;
+    static final int MYHOME = 100;
+    static final int MYHOME_WITH_ID = 101;
+
 
     static final UriMatcher uriMatcher;
     static final String authority = MyHomeContract.CONTENT_AUTHORITY;
 
     static {
         uriMatcher = new UriMatcher((UriMatcher.NO_MATCH));
-        uriMatcher.addURI(authority, MyHomeContract.PATH_LIGHTS, LIGHTS);
-        uriMatcher.addURI(authority,MyHomeContract.PATH_LIGHTS + "/#", LIGHTS_WITH_ID);
-        uriMatcher.addURI(authority, MyHomeContract.PATH_SENSORS, SENSORS);
-        uriMatcher.addURI(authority,MyHomeContract.PATH_SENSORS + "/#", SENSORS_WITH_ID);
-        uriMatcher.addURI(authority, MyHomeContract.PATH_MEDIA_PLAYERS, MEDIA_PLAYERS);
-        uriMatcher.addURI(authority,MyHomeContract.PATH_MEDIA_PLAYERS + "/#", MEDIA_PLAYER_WITH_ID);
+        uriMatcher.addURI(authority, MyHomeContract.PATH_MYHOME, MYHOME);
+        uriMatcher.addURI(authority,MyHomeContract.PATH_MYHOME + "/#", MYHOME_WITH_ID);
     }
 
-    private static final String sLightsIDSelection =
-            MyHomeContract.Lights.TABLE_NAME+
-                    "." + MyHomeContract.Lights.COLUMN_ENTITY_ID + " = ? ";
-    private static final String sSensorsIDSelection =
-            MyHomeContract.Sensors.TABLE_NAME+
-                    "." + MyHomeContract.Sensors.COLUMN_ENTITY_ID + " = ? ";
-    private static final String sMediaPlayersIDSelection =
-            MyHomeContract.MediaPlayers.TABLE_NAME+
-                    "." + MyHomeContract.MediaPlayers.COLUMN_ENTITY_ID + " = ? ";
+    private static final String sMyHomeIDSelection =
+            MyHomeContract.MyHome.TABLE_NAME+
+                    "." + MyHomeContract.MyHome.COLUMN_ENTITY_ID + " = ? ";
 
     private MyHomeDBHelper mOpenHelper;
 
@@ -56,18 +43,10 @@ public class MyHomeProvider extends ContentProvider {
         final int match = uriMatcher.match(uri);
 
         switch (match) {
-            case LIGHTS:
-                return  MyHomeContract.Lights.CONTENT_TYPE;
-            case LIGHTS_WITH_ID:
-                return  MyHomeContract.Lights.CONTENT_TYPE;
-            case SENSORS:
-                return  MyHomeContract.Sensors.CONTENT_TYPE;
-            case SENSORS_WITH_ID:
-                return  MyHomeContract.Sensors.CONTENT_TYPE;
-            case MEDIA_PLAYERS:
-                return  MyHomeContract.MediaPlayers.CONTENT_TYPE;
-            case MEDIA_PLAYER_WITH_ID:
-                return  MyHomeContract.MediaPlayers.CONTENT_TYPE;
+            case MYHOME:
+                return  MyHomeContract.MyHome.CONTENT_TYPE;
+            case MYHOME_WITH_ID:
+                return  MyHomeContract.MyHome.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -80,9 +59,9 @@ public class MyHomeProvider extends ContentProvider {
         // and query the database accordingly.
         Cursor retCursor;
         switch (uriMatcher.match(uri)) {
-            case LIGHTS: {
+            case MYHOME: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                        MyHomeContract.Lights.TABLE_NAME,
+                        MyHomeContract.MyHome.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -92,65 +71,13 @@ public class MyHomeProvider extends ContentProvider {
                 );
                 break;
             }
-            case LIGHTS_WITH_ID: {
+            case MYHOME_WITH_ID: {
                 int entityID = MyHomeContract.getEntityIDFromURI(uri);
                 selectionArgs = new String[]{Integer.toString(entityID)};
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                        MyHomeContract.Lights.TABLE_NAME,
+                        MyHomeContract.MyHome.TABLE_NAME,
                         projection,
-                        sLightsIDSelection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
-                break;
-            }
-            case SENSORS: {
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        MyHomeContract.Sensors.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
-                break;
-            }
-            case SENSORS_WITH_ID: {
-                int entityID = MyHomeContract.getEntityIDFromURI(uri);
-                selectionArgs = new String[]{Integer.toString(entityID)};
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        MyHomeContract.Sensors.TABLE_NAME,
-                        projection,
-                        sSensorsIDSelection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
-                break;
-            }
-            case MEDIA_PLAYERS: {
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        MyHomeContract.MediaPlayers.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
-                break;
-            }
-            case MEDIA_PLAYER_WITH_ID: {
-                int entityID = MyHomeContract.getEntityIDFromURI(uri);
-                selectionArgs = new String[]{Integer.toString(entityID)};
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        MyHomeContract.MediaPlayers.TABLE_NAME,
-                        projection,
-                        sMediaPlayersIDSelection,
+                        sMyHomeIDSelection,
                         selectionArgs,
                         null,
                         null,
@@ -172,26 +99,10 @@ public class MyHomeProvider extends ContentProvider {
         Uri returnUri;
 
         switch (match) {
-            case LIGHTS: {
-                long _id = db.insert(MyHomeContract.Lights.TABLE_NAME, null, values);
+            case MYHOME: {
+                long _id = db.insert(MyHomeContract.MyHome.TABLE_NAME, null, values);
                 if ( _id > 0 )
-                    returnUri = MyHomeContract.Lights.buildLightsUri(_id);
-                else
-                    throw new android.database.SQLException("Failed to insert row into " + uri);
-                break;
-            }
-            case SENSORS: {
-                long _id = db.insert(MyHomeContract.Sensors.TABLE_NAME, null, values);
-                if ( _id > 0 )
-                    returnUri = MyHomeContract.Sensors.buildSensorsUri(_id);
-                else
-                    throw new android.database.SQLException("Failed to insert row into " + uri);
-                break;
-            }
-            case MEDIA_PLAYERS: {
-                long _id = db.insert(MyHomeContract.MediaPlayers.TABLE_NAME, null, values);
-                if ( _id > 0 )
-                    returnUri = MyHomeContract.MediaPlayers.buildMediaPlayersUri(_id);
+                    returnUri = MyHomeContract.MyHome.buildLightsUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -211,17 +122,9 @@ public class MyHomeProvider extends ContentProvider {
         // this makes delete all rows return the number of rows deleted
         if ( null == selection ) selection = "1";
         switch (match) {
-            case LIGHTS:
+            case MYHOME:
                 rowsDeleted = db.delete(
-                        MyHomeContract.Lights.TABLE_NAME, selection, selectionArgs);
-                break;
-            case SENSORS:
-                rowsDeleted = db.delete(
-                        MyHomeContract.Sensors.TABLE_NAME, selection, selectionArgs);
-                break;
-            case MEDIA_PLAYERS:
-                rowsDeleted = db.delete(
-                        MyHomeContract.MediaPlayers.TABLE_NAME, selection, selectionArgs);
+                        MyHomeContract.MyHome.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -241,16 +144,8 @@ public class MyHomeProvider extends ContentProvider {
         int rowsUpdated;
 
         switch (match) {
-            case LIGHTS:
-                rowsUpdated = db.update(MyHomeContract.Lights.TABLE_NAME, values, selection,
-                        selectionArgs);
-                break;
-            case SENSORS:
-                rowsUpdated = db.update(MyHomeContract.Sensors.TABLE_NAME, values, selection,
-                        selectionArgs);
-                break;
-            case MEDIA_PLAYERS:
-                rowsUpdated = db.update(MyHomeContract.MediaPlayers.TABLE_NAME, values, selection,
+            case MYHOME:
+                rowsUpdated = db.update(MyHomeContract.MyHome.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             default:
@@ -268,44 +163,12 @@ public class MyHomeProvider extends ContentProvider {
         final int match = uriMatcher.match(uri);
         int returnCount;
         switch (match) {
-            case LIGHTS:
+            case MYHOME:
                 db.beginTransaction();
                 returnCount = 0;
                 try {
                     for (ContentValues value : values) {
-                        long _id = db.insert(MyHomeContract.Lights.TABLE_NAME, null, value);
-                        if (_id != -1) {
-                            returnCount++;
-                        }
-                    }
-                    db.setTransactionSuccessful();
-                } finally {
-                    db.endTransaction();
-                }
-                getContext().getContentResolver().notifyChange(uri, null);
-                return returnCount;
-            case SENSORS:
-                db.beginTransaction();
-                returnCount = 0;
-                try {
-                    for (ContentValues value : values) {
-                        long _id = db.insert(MyHomeContract.Sensors.TABLE_NAME, null, value);
-                        if (_id != -1) {
-                            returnCount++;
-                        }
-                    }
-                    db.setTransactionSuccessful();
-                } finally {
-                    db.endTransaction();
-                }
-                getContext().getContentResolver().notifyChange(uri, null);
-                return returnCount;
-            case MEDIA_PLAYERS:
-                db.beginTransaction();
-                returnCount = 0;
-                try {
-                    for (ContentValues value : values) {
-                        long _id = db.insert(MyHomeContract.MediaPlayers.TABLE_NAME, null, value);
+                        long _id = db.insert(MyHomeContract.MyHome.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }

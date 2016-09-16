@@ -28,38 +28,21 @@ public class MyHomeDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        final String SQL_CREATE_LIGHTS_TABLE = "CREATE TABLE " + MyHomeContract.Lights.TABLE_NAME + " (" +
-                MyHomeContract.Lights.COLUMN_ID + " INTEGER PRIMARY KEY," +
-                MyHomeContract.Lights.COLUMN_ENTITY_ID + " TEXT NOT NULL," +
-                MyHomeContract.Lights.COLUMN_NAME + " TEXT," +
-                MyHomeContract.Lights.COLUMN_STATE + " TEXT," +
-                MyHomeContract.Lights.COLUMN_LAST_CHANGED + " TEXT," +
-                MyHomeContract.Lights.COLUMN_BRIGHTNESS + " TEXT," +
-                MyHomeContract.Lights.COLUMN_COLOR_TEMP + " TEXT," +
-                MyHomeContract.Lights.COLUMN_RGB + " TEXT" +
+        final String SQL_CREATE_MYHOME_TABLE = "CREATE TABLE " + MyHomeContract.MyHome.TABLE_NAME + " (" +
+                MyHomeContract.MyHome.COLUMN_ID + " INTEGER PRIMARY KEY," +
+                MyHomeContract.MyHome.COLUMN_ENTITY_ID + " TEXT NOT NULL," +
+                MyHomeContract.MyHome.COLUMN_NAME + " TEXT," +
+                MyHomeContract.MyHome.COLUMN_STATE + " TEXT," +
+                MyHomeContract.MyHome.COLUMN_LAST_CHANGED + " TEXT," +
+                MyHomeContract.MyHome.COLUMN_BRIGHTNESS + " TEXT," +
+                MyHomeContract.MyHome.COLUMN_COLOR_TEMP + " TEXT," +
+                MyHomeContract.MyHome.COLUMN_ICON + " TEXT," +
+                MyHomeContract.MyHome.COLUMN_UNITS + " TEXT," +
+                MyHomeContract.MyHome.COLUMN_RGB + " TEXT" +
                 " );";
 
-        final String SQL_CREATE_SENSORS_TABLE = "CREATE TABLE " + MyHomeContract.Sensors.TABLE_NAME + " (" +
-                MyHomeContract.Sensors.COLUMN_ID + " INTEGER PRIMARY KEY," +
-                MyHomeContract.Sensors.COLUMN_ENTITY_ID + " TEXT NOT NULL," +
-                MyHomeContract.Sensors.COLUMN_NAME + " TEXT," +
-                MyHomeContract.Sensors.COLUMN_ICON + " TEXT," +
-                MyHomeContract.Sensors.COLUMN_UNITS + " TEXT," +
-                MyHomeContract.Sensors.COLUMN_STATE + " TEXT," +
-                MyHomeContract.Sensors.COLUMN_LAST_CHANGED + " TEXT" +
-                " );";
+        sqLiteDatabase.execSQL(SQL_CREATE_MYHOME_TABLE);
 
-        final String SQL_CREATE_MEDIA_PLAYERS_TABLE = "CREATE TABLE " + MyHomeContract.MediaPlayers.TABLE_NAME + " (" +
-                MyHomeContract.MediaPlayers.COLUMN_ID + " INTEGER PRIMARY KEY," +
-                MyHomeContract.MediaPlayers.COLUMN_ENTITY_ID + " TEXT NOT NULL," +
-                MyHomeContract.MediaPlayers.COLUMN_NAME + " TEXT," +
-                MyHomeContract.MediaPlayers.COLUMN_STATE + " TEXT," +
-                MyHomeContract.MediaPlayers.COLUMN_LAST_CHANGED + " TEXT" +
-                " );";
-
-        sqLiteDatabase.execSQL(SQL_CREATE_LIGHTS_TABLE);
-        sqLiteDatabase.execSQL(SQL_CREATE_SENSORS_TABLE);
-        sqLiteDatabase.execSQL(SQL_CREATE_MEDIA_PLAYERS_TABLE);
     }
 
     @Override
@@ -70,9 +53,7 @@ public class MyHomeDBHelper extends SQLiteOpenHelper {
         // It does NOT depend on the version number for your application.
         // If you want to update the schema without wiping data, commenting out the next 2 lines
         // should be your top priority before modifying this method.
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MyHomeContract.Lights.TABLE_NAME);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MyHomeContract.Sensors.TABLE_NAME);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MyHomeContract.MediaPlayers.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MyHomeContract.MyHome.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

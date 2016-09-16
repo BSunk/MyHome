@@ -16,5 +16,10 @@ public class MainActivity extends AppCompatActivity {
         Intent service = new Intent(this, ConfigDataPullService.class);
         startService(service);
 
+        MainActivityFragment fragment = new MainActivityFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.main_fragment_container, fragment)
+                .commit();
+
     }
 }

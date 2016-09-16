@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#757575</color>
+    <color name="colorPrimaryDark">#455a64</color>
+    <color name="colorAccent">#ff6e40</color>
+    <color name="background">#212121</color>
+    <color name="bulb_on">#f9cb82</color>
+    <color name="bulb_off">#616161</color>
+    <color name="lights_cardview_background">#8d6e63</color>
+    <color name="sensors_cardview_background">#78909c</color>
 </resources>
