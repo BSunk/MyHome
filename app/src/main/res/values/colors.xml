@@ -6,6 +6,7 @@
     <color name="background">#212121</color>
     <color name="bulb_on">#f9cb82</color>
     <color name="bulb_off">#616161</color>
-    <color name="lights_cardview_background">#8d6e63</color>
+    <color name="lights_cardview_background">#4e342e</color>
     <color name="sensors_cardview_background">#78909c</color>
+    <color name="text_color_light">#cbd1d4</color>
 </resources>

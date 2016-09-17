@@ -7,10 +7,12 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bsunk.myhome.data.MyHomeContract;
@@ -36,11 +38,15 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public static class LightsViewHolder extends RecyclerView.ViewHolder  {
         public TextView lightNameTextView;
         public ImageView lightImageView;
+        public SeekBar lightSeekBar;
+        public TextView lightBrightness;
 
         public LightsViewHolder(View itemView) {
             super(itemView);
-            lightNameTextView = (TextView) itemView.findViewById(R.id.name_textview);
-            lightImageView = (ImageView) itemView.findViewById(R.id.bulbImageView);
+            lightNameTextView = (TextView) itemView.findViewById(R.id.light_name_textview);
+            lightImageView = (ImageView) itemView.findViewById(R.id.light_bulb_imageView);
+            lightSeekBar = (SeekBar) itemView.findViewById(R.id.light_seek_bar);
+            lightBrightness = (TextView) itemView.findViewById(R.id.light_brightness);
         }
     }
 
@@ -109,7 +115,7 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
         }
         else if (viewHolder.getItemViewType() == LIGHT_TYPE) {
-            LightsViewHolder holder = (LightsViewHolder) viewHolder;
+            final LightsViewHolder holder = (LightsViewHolder) viewHolder;
             holder.lightNameTextView.setText(entityName);
             if(cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_STATE)).equals("on")) {
                 holder.lightImageView.setColorFilter(mContext.getResources().getColor(R.color.bulb_on));
@@ -117,8 +123,34 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             else {
                 holder.lightImageView.setColorFilter(mContext.getResources().getColor(R.color.bulb_off));
             }
-            //StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
-            //layoutParams.setFullSpan(true);
+            String brightness = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_BRIGHTNESS));
+            if (brightness!=null) {
+                int progress = Integer.parseInt(brightness);
+                holder.lightSeekBar.setProgress(progress);
+                double percentBrightness = (progress/255.0) * 100.0;
+                holder.lightBrightness.setText(Math.round(percentBrightness)+"%");
+            }
+
+            holder.lightSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    double percentBrightness = (progress/255.0) * 100.0;
+                    holder.lightBrightness.setText(Math.round(percentBrightness)+"%");
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+
+            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+            layoutParams.setFullSpan(true);
         }
 
     }

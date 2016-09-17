@@ -37,7 +37,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         View rootView = inflater.inflate(R.layout.fragment_main_activity, container, false);
         EntityRecyclerView = (RecyclerView) rootView.findViewById(R.id.entity_recyclerview);
         sglm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        sglm.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         EntityRecyclerView.setLayoutManager(sglm);
         adapter = new EntityAdapter(getContext(), null);
         EntityRecyclerView.setAdapter(adapter);
