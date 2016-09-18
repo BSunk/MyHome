@@ -23,15 +23,19 @@ import com.bsunk.myhome.data.MyHomeContract;
 public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static int SENSOR_TYPE = 1;
     public static int LIGHT_TYPE = 2;
+    public static int MEDIA_PLAYER_TYPE = 3;
+    public static final double brightnessMax = 255.0;
 
     public static class SensorViewHolder extends RecyclerView.ViewHolder {
         public TextView sensorNameTextView;
         public TextView sensorStateTextView;
+        public ImageView sensorIconImageView;
 
         public SensorViewHolder(View itemView) {
             super(itemView);
             sensorNameTextView = (TextView) itemView.findViewById(R.id.sensor_name_textview);
             sensorStateTextView = (TextView) itemView.findViewById(R.id.sensor_state_textview);
+            sensorIconImageView = (ImageView) itemView.findViewById(R.id.sensor_icon_imageview);
         }
     }
 
@@ -89,11 +93,14 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public int getItemViewType(int position) {
         cursor.moveToPosition(position);
         String type = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_TYPE));
-        if (type.equals("sensor")) {
-            return 1;
+        if (type.equals("Sensors")) {
+            return SENSOR_TYPE;
         }
-        else if (type.equals("light")) {
-            return 2;
+        else if (type.equals("Lights")) {
+            return LIGHT_TYPE;
+        }
+        else if  (type.equals("Media Players")) {
+            return 3;
         }
         return 0;
     }
@@ -105,6 +112,7 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         if ( viewHolder.getItemViewType() == SENSOR_TYPE) {
             String units = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_UNITS));
+            String icon = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_ICON));
             SensorViewHolder holder = (SensorViewHolder) viewHolder;
             holder.sensorNameTextView.setText(entityName);
             if(units!=null) {
@@ -127,7 +135,7 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (brightness!=null) {
                 int progress = Integer.parseInt(brightness);
                 holder.lightSeekBar.setProgress(progress);
-                double percentBrightness = (progress/255.0) * 100.0;
+                double percentBrightness = (progress/brightnessMax) * 100.0;
                 holder.lightBrightness.setText(Math.round(percentBrightness)+"%");
             }
 
@@ -149,8 +157,8 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             });
 
-            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
-            layoutParams.setFullSpan(true);
+            //StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+            //layoutParams.setFullSpan(true);
         }
 
     }

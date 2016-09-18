@@ -20,46 +20,50 @@
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:gravity="center"
-                android:background="@color/lights_cardview_background"
-                android:weightSum="1">
+                android:background="@color/lights_cardview_background">
 
                 <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
                     android:tint="@color/bulb_off"
                     android:layout_marginStart="5dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
                     app:srcCompat="@drawable/ic_lightbulb_outline_black_24dp"
-                    android:layout_weight=".40"
                     android:id="@+id/light_bulb_imageView" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/light_brightness"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textColor="@color/text_color_light"
-                    android:text="@string/initial_light_brightness"
-                    android:layout_weight=".20" />
+                    android:text="@string/initial_light_brightness" />
 
                 <android.support.v7.widget.AppCompatSeekBar
                     android:id="@+id/light_seek_bar"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:max="255"
-                    android:layout_weight=".40" />
+                    android:max="255"/>
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp">
 
                 <TextView
                     android:id="@+id/light_name_textview"

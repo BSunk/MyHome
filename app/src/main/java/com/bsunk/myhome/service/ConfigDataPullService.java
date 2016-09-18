@@ -24,9 +24,9 @@ public class ConfigDataPullService extends IntentService {
 
     RequestQueue mRequestQueue;
     String LOG_TAG = ConfigDataPullService.class.getName();
-    private static String SENSOR_TYPE = "sensor";
-    private static String LIGHT_TYPE = "light";
-    private static String MP_TYPE = "media_player";
+    private static String SENSOR_TYPE = "Sensors";
+    private static String LIGHT_TYPE = "Lights";
+    private static String MP_TYPE = "Media Players";
 
     public ConfigDataPullService() {
         super("ConfigDataPullService");

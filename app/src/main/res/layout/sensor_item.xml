@@ -17,21 +17,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
             android:background="@color/sensors_cardview_background"
             android:gravity="center">
+
+            <ImageView
+                android:id="@+id/sensor_icon_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:paddingTop="5dp"
                 android:paddingStart="2dp"
                 android:paddingEnd="2dp"
-                android:paddingBottom="10dp"
+                android:paddingBottom="5dp"
                 android:id="@+id/sensor_state_textview"
                 android:layout_gravity="center"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 />
 
         </LinearLayout>
@@ -39,8 +45,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp">
 
             <TextView
                 android:id="@+id/sensor_name_textview"
