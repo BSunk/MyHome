@@ -25,9 +25,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:theme="@style/AppTheme"
-                android:minHeight="20dp"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:titleTextColor="@android:color/white" />
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+                app:titleTextColor="@android:color/white" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_home" />
+
+                </LinearLayout>
+
+
+                </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
         <FrameLayout
