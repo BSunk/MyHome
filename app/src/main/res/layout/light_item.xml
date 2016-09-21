@@ -1,41 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        app:cardCornerRadius="2dp"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    app:cardCornerRadius="2dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:gravity="center"
+            android:background="@color/lights_cardview_background">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:tint="@color/bulb_off"
+                android:layout_marginStart="5dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                app:srcCompat="@drawable/ic_lightbulb_outline_black_24dp"
+                android:id="@+id/light_bulb_imageView" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:background="@color/lights_cardview_background">
+                android:layout_gravity="center"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:tint="@color/bulb_off"
-                    android:layout_marginStart="5dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:clickable="true"
-                    app:srcCompat="@drawable/ic_lightbulb_outline_black_24dp"
-                    android:id="@+id/light_bulb_imageView" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                <TextView
+                    android:id="@+id/light_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/light_off"/>
 
                 <TextView
                     android:id="@+id/light_brightness"
@@ -54,25 +66,25 @@
                     android:layout_gravity="center"
                     android:max="255"/>
 
-                </LinearLayout>
-
-
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp">
 
-                <TextView
-                    android:id="@+id/light_name_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bedroom Light"
-                    android:layout_marginStart="10dp"
-                    android:layout_gravity="center" />
-
-            </LinearLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/light_name_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bedroom Light"
+                android:layout_marginStart="10dp"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

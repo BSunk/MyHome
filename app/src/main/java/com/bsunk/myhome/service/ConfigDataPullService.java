@@ -24,9 +24,8 @@ public class ConfigDataPullService extends IntentService {
 
     RequestQueue mRequestQueue;
     String LOG_TAG = ConfigDataPullService.class.getName();
-    private static String SENSOR_TYPE = "Sensors";
-    private static String LIGHT_TYPE = "Lights";
-    private static String MP_TYPE = "Media Players";
+
+    public static final String[] TYPE = {"Sensors", "Lights", "Media Players"};
 
     public ConfigDataPullService() {
         super("ConfigDataPullService");
@@ -87,7 +86,7 @@ public class ConfigDataPullService extends IntentService {
             lightsValues.put(MyHomeContract.MyHome.COLUMN_ENTITY_ID, entity.getString("entity_id"));
             lightsValues.put(MyHomeContract.MyHome.COLUMN_STATE, entity.getString("state"));
             lightsValues.put(MyHomeContract.MyHome.COLUMN_LAST_CHANGED, entity.getString("last_changed"));
-            lightsValues.put(MyHomeContract.MyHome.COLUMN_TYPE, LIGHT_TYPE);
+            lightsValues.put(MyHomeContract.MyHome.COLUMN_TYPE, TYPE[1]);
             JSONObject attributes = entity.getJSONObject("attributes");
             if (attributes.has("brightness")) {
                 lightsValues.put(MyHomeContract.MyHome.COLUMN_BRIGHTNESS, attributes.getString("brightness"));
@@ -117,7 +116,7 @@ public class ConfigDataPullService extends IntentService {
             sensorValues.put(MyHomeContract.MyHome.COLUMN_ENTITY_ID, entity.getString("entity_id"));
             sensorValues.put(MyHomeContract.MyHome.COLUMN_STATE, entity.getString("state"));
             sensorValues.put(MyHomeContract.MyHome.COLUMN_LAST_CHANGED, entity.getString("last_changed"));
-            sensorValues.put(MyHomeContract.MyHome.COLUMN_TYPE, SENSOR_TYPE);
+            sensorValues.put(MyHomeContract.MyHome.COLUMN_TYPE, TYPE[0]);
             JSONObject attributes = entity.getJSONObject("attributes");
             if (attributes.has("icon")) {
                 sensorValues.put(MyHomeContract.MyHome.COLUMN_ICON, attributes.getString("icon"));
@@ -142,7 +141,7 @@ public class ConfigDataPullService extends IntentService {
             mediaPlayerValues.put(MyHomeContract.MyHome.COLUMN_ENTITY_ID, entity.getString("entity_id"));
             mediaPlayerValues.put(MyHomeContract.MyHome.COLUMN_STATE, entity.getString("state"));
             mediaPlayerValues.put(MyHomeContract.MyHome.COLUMN_LAST_CHANGED, entity.getString("last_changed"));
-            mediaPlayerValues.put(MyHomeContract.MyHome.COLUMN_TYPE, MP_TYPE);
+            mediaPlayerValues.put(MyHomeContract.MyHome.COLUMN_TYPE, TYPE[2]);
             JSONObject attributes = entity.getJSONObject("attributes");
             if (attributes.has("friendly_name")) {
                 mediaPlayerValues.put(MyHomeContract.MyHome.COLUMN_NAME, attributes.getString("friendly_name"));

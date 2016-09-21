@@ -8,7 +8,6 @@ import com.bsunk.myhome.data.MyHomeContract;
 import com.tylerjroach.eventsource.EventSourceHandler;
 import com.tylerjroach.eventsource.MessageEvent;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

@@ -44,6 +44,7 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public ImageView lightImageView;
         public SeekBar lightSeekBar;
         public TextView lightBrightness;
+        public TextView lightOff;
 
         public LightsViewHolder(View itemView) {
             super(itemView);
@@ -51,6 +52,7 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             lightImageView = (ImageView) itemView.findViewById(R.id.light_bulb_imageView);
             lightSeekBar = (SeekBar) itemView.findViewById(R.id.light_seek_bar);
             lightBrightness = (TextView) itemView.findViewById(R.id.light_brightness);
+            lightOff = (TextView) itemView.findViewById(R.id.light_off);
         }
     }
 
@@ -127,9 +129,15 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             holder.lightNameTextView.setText(entityName);
             if(cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_STATE)).equals("on")) {
                 holder.lightImageView.setColorFilter(mContext.getResources().getColor(R.color.bulb_on));
+                holder.lightBrightness.setVisibility(View.VISIBLE);
+                holder.lightSeekBar.setVisibility(View.VISIBLE);
+                holder.lightOff.setVisibility(View.GONE);
             }
             else {
                 holder.lightImageView.setColorFilter(mContext.getResources().getColor(R.color.bulb_off));
+                holder.lightBrightness.setVisibility(View.GONE);
+                holder.lightSeekBar.setVisibility(View.GONE);
+                holder.lightOff.setVisibility(View.VISIBLE);
             }
             String brightness = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_BRIGHTNESS));
             if (brightness!=null) {
