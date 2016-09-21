@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.bsunk.myhome.data.MyHomeContract;
 import com.bsunk.myhome.service.ConfigDataPullService;
@@ -36,9 +38,13 @@ public class MainActivity extends AppCompatActivity {
     String eventUrl = "http://192.168.10.101:8123/api/stream";
     Map<String, String> extraHeaderParameters = new HashMap<>();
     public static final String TYPE_KEY = "type";
+    static final String NAV_PAGE_KEY = "page";
+    int NAV_PAGE=0;
+
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.nvView) NavigationView navigationView;
+    @BindView(R.id.toolbar_title) TextView toolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,20 +60,64 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.setDrawerListener(mDrawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         mDrawerToggle.syncState();
 
-        Intent service = new Intent(this, ConfigDataPullService.class);
-        startService(service);
-
+        if(savedInstanceState!=null) {
+            NAV_PAGE = savedInstanceState.getInt(NAV_PAGE_KEY);
+            mToolbar.setTitle(savedInstanceState.getCharSequence("toolbar_title"));
+        }
+        else {
+            Intent service = new Intent(this, ConfigDataPullService.class);
+            startService(service);
+        }
         MainActivityFragment fragment = new MainActivityFragment();
         Bundle args = new Bundle();
-        args.putInt(TYPE_KEY, MainActivityFragment.ALL_LOADER);
+        args.putInt(TYPE_KEY, NAV_PAGE);
         fragment.setArguments(args);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.main_fragment_container, fragment)
                 .commit();
+
         setNavigationViewItems();
 
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                drawerLayout.closeDrawers();
+                String title = item.getTitle().toString();
+                if(title.equals(ConfigDataPullService.TYPE[0])) {
+                    NAV_PAGE = MainActivityFragment.SENSORS_LOADER;
+                }
+                else if(title.equals(ConfigDataPullService.TYPE[1])) {
+                    NAV_PAGE = MainActivityFragment.LIGHTS_LOADER;
+                }
+                else if(title.equals(ConfigDataPullService.TYPE[2])) {
+                    NAV_PAGE = MainActivityFragment.MP_LOADER;
+                }
+                else if(title.equals("Home")) {
+                    NAV_PAGE = MainActivityFragment.ALL_LOADER;
+                }
+
+                toolbarTitle.setText(item.getTitle());
+                MainActivityFragment fragment = new MainActivityFragment();
+                Bundle args = new Bundle();
+                args.putInt(TYPE_KEY, NAV_PAGE);
+                fragment.setArguments(args);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.main_fragment_container, fragment)
+                        .commit();
+
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(NAV_PAGE_KEY, NAV_PAGE);
+        savedInstanceState.putCharSequence("toolbar_title", mToolbar.getTitle());
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     public void setNavigationViewItems() {

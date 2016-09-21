@@ -4,7 +4,9 @@
     <group android:checkableBehavior="single"
         android:orderInCategory="0"
         android:id="@+id/drawer_group_one">
-
+        <item
+            android:title="@string/nav_drawer_home"
+            android:icon="@drawable/ic_home_black_24dp"/>
     </group>
 
     <group>

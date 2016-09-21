@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bsunk.myhome.data.MyHomeContract;
+import com.bsunk.myhome.service.ConfigDataPullService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +28,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @BindView(R.id.entity_recyclerview) RecyclerView EntityRecyclerView;
     StaggeredGridLayoutManager sglm;
     EntityAdapter adapter;
+    static final String LOADER_KEY = "loader";
     int LOADER;
     public static final int ALL_LOADER = 0;
     public static final int SENSORS_LOADER = 1;
@@ -42,35 +44,56 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_activity, container, false);
-        ButterKnife.bind(rootView, getActivity());
+        ButterKnife.bind(this, rootView);
 
         Bundle args = this.getArguments();
         if (args!=null) {
             LOADER = args.getInt(MainActivity.TYPE_KEY);
-            Log.v("TAG", Integer.toString(LOADER));
+            getLoaderManager().initLoader(LOADER, null, this);
         }
 
         sglm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         EntityRecyclerView.setLayoutManager(sglm);
         adapter = new EntityAdapter(getContext(), null);
         EntityRecyclerView.setAdapter(adapter);
+
         return rootView ;
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(ALL_LOADER, null, this);
-    }
-
-    @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(getActivity(),
-                MyHomeContract.MyHome.CONTENT_URI,
-                null,
-                null,
-                null,
-                null);
+        // Defines an array to contain the selection arguments
+        switch (i) {
+            case ALL_LOADER:
+                return new CursorLoader(getActivity(),
+                        MyHomeContract.MyHome.CONTENT_URI,
+                        null,
+                        null,
+                        null,
+                        null);
+            case SENSORS_LOADER:
+                return new CursorLoader(getActivity(),
+                        MyHomeContract.MyHome.CONTENT_URI,
+                        null,
+                        MyHomeContract.MyHome.COLUMN_TYPE + " = ?",
+                        new String[] {ConfigDataPullService.TYPE[0]},
+                        null);
+            case LIGHTS_LOADER:
+                return new CursorLoader(getActivity(),
+                        MyHomeContract.MyHome.CONTENT_URI,
+                        null,
+                        MyHomeContract.MyHome.COLUMN_TYPE + " = ?",
+                        new String[] {ConfigDataPullService.TYPE[1]},
+                        null);
+            case MP_LOADER:
+                return new CursorLoader(getActivity(),
+                        MyHomeContract.MyHome.CONTENT_URI,
+                        null,
+                        MyHomeContract.MyHome.COLUMN_TYPE + " = ?",
+                        new String[] {ConfigDataPullService.TYPE[2]},
+                        null);
+        }
+        return null;
     }
 
     @Override
