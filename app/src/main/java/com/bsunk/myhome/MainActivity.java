@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(savedInstanceState!=null) {
             NAV_PAGE = savedInstanceState.getInt(NAV_PAGE_KEY);
-            mToolbar.setTitle(savedInstanceState.getCharSequence("toolbar_title"));
+            toolbarTitle.setText(savedInstanceState.getCharSequence("toolbar_title"));
         }
         else {
             Intent service = new Intent(this, ConfigDataPullService.class);
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt(NAV_PAGE_KEY, NAV_PAGE);
-        savedInstanceState.putCharSequence("toolbar_title", mToolbar.getTitle());
+        savedInstanceState.putCharSequence("toolbar_title", toolbarTitle.getText());
         super.onSaveInstanceState(savedInstanceState);
     }
 

@@ -26,36 +26,6 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public static int MEDIA_PLAYER_TYPE = 3;
     public static final double brightnessMax = 255.0;
 
-    public static class SensorViewHolder extends RecyclerView.ViewHolder {
-        public TextView sensorNameTextView;
-        public TextView sensorStateTextView;
-        public ImageView sensorIconImageView;
-
-        public SensorViewHolder(View itemView) {
-            super(itemView);
-            sensorNameTextView = (TextView) itemView.findViewById(R.id.sensor_name_textview);
-            sensorStateTextView = (TextView) itemView.findViewById(R.id.sensor_state_textview);
-            sensorIconImageView = (ImageView) itemView.findViewById(R.id.sensor_icon_imageview);
-        }
-    }
-
-    public static class LightsViewHolder extends RecyclerView.ViewHolder  {
-        public TextView lightNameTextView;
-        public ImageView lightImageView;
-        public SeekBar lightSeekBar;
-        public TextView lightBrightness;
-        public TextView lightOff;
-
-        public LightsViewHolder(View itemView) {
-            super(itemView);
-            lightNameTextView = (TextView) itemView.findViewById(R.id.light_name_textview);
-            lightImageView = (ImageView) itemView.findViewById(R.id.light_bulb_imageView);
-            lightSeekBar = (SeekBar) itemView.findViewById(R.id.light_seek_bar);
-            lightBrightness = (TextView) itemView.findViewById(R.id.light_brightness);
-            lightOff = (TextView) itemView.findViewById(R.id.light_off);
-        }
-    }
-
     private Cursor cursor;
     private Context mContext;
 
@@ -72,7 +42,7 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .inflate(R.layout.light_item, viewGroup, false);
             return new LightsViewHolder(v);
         }
-        else {
+        else if (viewType == SENSOR_TYPE){
             v = LayoutInflater.from(viewGroup.getContext())
                     .inflate(R.layout.sensor_item, viewGroup, false);
             return new SensorViewHolder(v);
@@ -112,7 +82,7 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         cursor.moveToPosition(position);
         String entityName = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_NAME));
 
-        if ( viewHolder.getItemViewType() == SENSOR_TYPE) {
+        if (viewHolder.getItemViewType() == SENSOR_TYPE) {
             String units = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_UNITS));
             String icon = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_ICON));
             SensorViewHolder holder = (SensorViewHolder) viewHolder;
