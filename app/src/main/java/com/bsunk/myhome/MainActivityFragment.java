@@ -28,7 +28,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @BindView(R.id.entity_recyclerview) RecyclerView EntityRecyclerView;
     StaggeredGridLayoutManager sglm;
     EntityAdapter adapter;
-    static final String LOADER_KEY = "loader";
     int LOADER;
     public static final int ALL_LOADER = 0;
     public static final int SENSORS_LOADER = 1;
@@ -66,32 +65,16 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         switch (i) {
             case ALL_LOADER:
                 return new CursorLoader(getActivity(),
-                        MyHomeContract.MyHome.CONTENT_URI,
-                        null,
-                        null,
-                        null,
-                        null);
+                        MyHomeContract.MyHome.CONTENT_URI, null, null, null, null);
             case SENSORS_LOADER:
                 return new CursorLoader(getActivity(),
-                        MyHomeContract.MyHome.CONTENT_URI,
-                        null,
-                        MyHomeContract.MyHome.COLUMN_TYPE + " = ?",
-                        new String[] {ConfigDataPullService.TYPE[0]},
-                        null);
+                        MyHomeContract.MyHome.CONTENT_URI, null, MyHomeContract.MyHome.COLUMN_TYPE + " = ?", new String[] {ConfigDataPullService.TYPE[0]}, null);
             case LIGHTS_LOADER:
                 return new CursorLoader(getActivity(),
-                        MyHomeContract.MyHome.CONTENT_URI,
-                        null,
-                        MyHomeContract.MyHome.COLUMN_TYPE + " = ?",
-                        new String[] {ConfigDataPullService.TYPE[1]},
-                        null);
+                        MyHomeContract.MyHome.CONTENT_URI, null, MyHomeContract.MyHome.COLUMN_TYPE + " = ?", new String[] {ConfigDataPullService.TYPE[1]}, null);
             case MP_LOADER:
                 return new CursorLoader(getActivity(),
-                        MyHomeContract.MyHome.CONTENT_URI,
-                        null,
-                        MyHomeContract.MyHome.COLUMN_TYPE + " = ?",
-                        new String[] {ConfigDataPullService.TYPE[2]},
-                        null);
+                        MyHomeContract.MyHome.CONTENT_URI, null, MyHomeContract.MyHome.COLUMN_TYPE + " = ?", new String[] {ConfigDataPullService.TYPE[2]}, null);
         }
         return null;
     }

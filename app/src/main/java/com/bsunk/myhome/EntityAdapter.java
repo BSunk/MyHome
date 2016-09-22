@@ -47,6 +47,11 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .inflate(R.layout.sensor_item, viewGroup, false);
             return new SensorViewHolder(v);
         }
+        else {
+            v = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.sensor_item, viewGroup, false);
+            return new SensorViewHolder(v);
+        }
     }
 
     public Cursor swapCursor(Cursor c) {
@@ -72,73 +77,9 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             return LIGHT_TYPE;
         }
         else if  (type.equals("Media Players")) {
-            return 3;
+            return MEDIA_PLAYER_TYPE;
         }
         return 0;
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        cursor.moveToPosition(position);
-        String entityName = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_NAME));
-
-        if (viewHolder.getItemViewType() == SENSOR_TYPE) {
-            String units = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_UNITS));
-            String icon = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_ICON));
-            SensorViewHolder holder = (SensorViewHolder) viewHolder;
-            holder.sensorNameTextView.setText(entityName);
-            if(units!=null) {
-                holder.sensorStateTextView.setText(cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_STATE)) + " " + units);
-            }
-            else {
-                holder.sensorStateTextView.setText(cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_STATE)));
-            }
-        }
-        else if (viewHolder.getItemViewType() == LIGHT_TYPE) {
-            final LightsViewHolder holder = (LightsViewHolder) viewHolder;
-            holder.lightNameTextView.setText(entityName);
-            if(cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_STATE)).equals("on")) {
-                holder.lightImageView.setColorFilter(mContext.getResources().getColor(R.color.bulb_on));
-                holder.lightBrightness.setVisibility(View.VISIBLE);
-                holder.lightSeekBar.setVisibility(View.VISIBLE);
-                holder.lightOff.setVisibility(View.GONE);
-            }
-            else {
-                holder.lightImageView.setColorFilter(mContext.getResources().getColor(R.color.bulb_off));
-                holder.lightBrightness.setVisibility(View.GONE);
-                holder.lightSeekBar.setVisibility(View.GONE);
-                holder.lightOff.setVisibility(View.VISIBLE);
-            }
-            String brightness = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_BRIGHTNESS));
-            if (brightness!=null) {
-                int progress = Integer.parseInt(brightness);
-                holder.lightSeekBar.setProgress(progress);
-                double percentBrightness = (progress/brightnessMax) * 100.0;
-                holder.lightBrightness.setText(Math.round(percentBrightness)+"%");
-            }
-
-            holder.lightSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    double percentBrightness = (progress/255.0) * 100.0;
-                    holder.lightBrightness.setText(Math.round(percentBrightness)+"%");
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-
-                }
-            });
-
-            //StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
-            //layoutParams.setFullSpan(true);
-        }
-
     }
 
     // Returns the total count of items in the list
@@ -147,5 +88,71 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return (cursor == null) ? 0 : cursor.getCount();
     }
 
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        cursor.moveToPosition(position);
+
+        if (viewHolder.getItemViewType() == SENSOR_TYPE) {
+            bindSensor(viewHolder);
+        }
+        else if (viewHolder.getItemViewType() == LIGHT_TYPE) {
+            bindLight(viewHolder);
+        }
+    }
+
+    public void bindSensor(RecyclerView.ViewHolder viewHolder) {
+        String entityName = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_NAME));
+
+        String units = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_UNITS));
+        String icon = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_ICON));
+        SensorViewHolder holder = (SensorViewHolder) viewHolder;
+        holder.sensorNameTextView.setText(entityName);
+        if(units!=null) {
+            holder.sensorStateTextView.setText(cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_STATE)) + " " + units);
+        }
+        else {
+            holder.sensorStateTextView.setText(cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_STATE)));
+        }
+    }
+
+    public void bindLight(RecyclerView.ViewHolder viewHolder) {
+        String entityName = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_NAME));
+        final LightsViewHolder holder = (LightsViewHolder) viewHolder;
+        holder.lightNameTextView.setText(entityName);
+        if(cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_STATE)).equals("on")) {
+            holder.lightImageView.setColorFilter(mContext.getResources().getColor(R.color.bulb_on));
+            holder.lightBrightness.setVisibility(View.VISIBLE);
+            holder.lightSeekBar.setVisibility(View.VISIBLE);
+            holder.lightOff.setVisibility(View.GONE);
+        }
+        else {
+            holder.lightImageView.setColorFilter(mContext.getResources().getColor(R.color.bulb_off));
+            holder.lightBrightness.setVisibility(View.GONE);
+            holder.lightSeekBar.setVisibility(View.GONE);
+            holder.lightOff.setVisibility(View.VISIBLE);
+        }
+        String brightness = cursor.getString(cursor.getColumnIndex(MyHomeContract.MyHome.COLUMN_BRIGHTNESS));
+        if (brightness!=null) {
+            int progress = Integer.parseInt(brightness);
+            holder.lightSeekBar.setProgress(progress);
+            double percentBrightness = (progress/brightnessMax) * 100.0;
+            holder.lightBrightness.setText(Math.round(percentBrightness)+"%");
+        }
+
+        holder.lightSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                double percentBrightness = (progress/255.0) * 100.0;
+                holder.lightBrightness.setText(Math.round(percentBrightness)+"%");
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+        //StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+        //layoutParams.setFullSpan(true);
+    }
 }
 

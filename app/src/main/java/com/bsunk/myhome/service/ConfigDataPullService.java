@@ -17,6 +17,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by Bharat on 9/11/2016.
  */
@@ -60,6 +62,9 @@ public class ConfigDataPullService extends IntentService {
                                 else if(entity.getString("entity_id").contains("light.")) {
                                     getLightsData(entity);
                                 }
+                                else if(entity.getString("entity_id").contains("group.")) {
+
+                                }
                             }
                         }
                         catch(JSONException e) {
@@ -85,7 +90,7 @@ public class ConfigDataPullService extends IntentService {
         try {
             lightsValues.put(MyHomeContract.MyHome.COLUMN_ENTITY_ID, entity.getString("entity_id"));
             lightsValues.put(MyHomeContract.MyHome.COLUMN_STATE, entity.getString("state"));
-            lightsValues.put(MyHomeContract.MyHome.COLUMN_LAST_CHANGED, entity.getString("last_changed"));
+            lightsValues.put(MyHomeContract.MyHome.COLUMN_LAST_CHANGED, entity.getString("last_updated"));
             lightsValues.put(MyHomeContract.MyHome.COLUMN_TYPE, TYPE[1]);
             JSONObject attributes = entity.getJSONObject("attributes");
             if (attributes.has("brightness")) {
@@ -115,7 +120,7 @@ public class ConfigDataPullService extends IntentService {
         try {
             sensorValues.put(MyHomeContract.MyHome.COLUMN_ENTITY_ID, entity.getString("entity_id"));
             sensorValues.put(MyHomeContract.MyHome.COLUMN_STATE, entity.getString("state"));
-            sensorValues.put(MyHomeContract.MyHome.COLUMN_LAST_CHANGED, entity.getString("last_changed"));
+            sensorValues.put(MyHomeContract.MyHome.COLUMN_LAST_CHANGED, entity.getString("last_updated"));
             sensorValues.put(MyHomeContract.MyHome.COLUMN_TYPE, TYPE[0]);
             JSONObject attributes = entity.getJSONObject("attributes");
             if (attributes.has("icon")) {
@@ -140,7 +145,7 @@ public class ConfigDataPullService extends IntentService {
         try {
             mediaPlayerValues.put(MyHomeContract.MyHome.COLUMN_ENTITY_ID, entity.getString("entity_id"));
             mediaPlayerValues.put(MyHomeContract.MyHome.COLUMN_STATE, entity.getString("state"));
-            mediaPlayerValues.put(MyHomeContract.MyHome.COLUMN_LAST_CHANGED, entity.getString("last_changed"));
+            mediaPlayerValues.put(MyHomeContract.MyHome.COLUMN_LAST_CHANGED, entity.getString("last_updated"));
             mediaPlayerValues.put(MyHomeContract.MyHome.COLUMN_TYPE, TYPE[2]);
             JSONObject attributes = entity.getJSONObject("attributes");
             if (attributes.has("friendly_name")) {

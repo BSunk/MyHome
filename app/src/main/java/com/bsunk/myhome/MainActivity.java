@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
             if(c.getCount() != 0) {
                 String type = ConfigDataPullService.TYPE[i].replaceAll("\\s","").toLowerCase();
                 int id = getResourceId(type, "drawable", getPackageName());
-                menu.add(R.id.drawer_group_one, Menu.FLAG_APPEND_TO_GROUP, 0, ConfigDataPullService.TYPE[i]).setIcon(id);
+                menu.add(R.id.drawer_group_two, Menu.FLAG_APPEND_TO_GROUP, 1, ConfigDataPullService.TYPE[i]).setIcon(id);
             }
         }
     }
