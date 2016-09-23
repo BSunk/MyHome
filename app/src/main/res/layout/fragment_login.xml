@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.bsunk.myhome.LoginActivityFragment"
+    tools:showIn="@layout/activity_login">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/server_title"
+        android:layout_gravity="start" />
+
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/GridLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:rowCount="2"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        tools:context=".GridXMLActivity" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/server_ip_title"
+            android:layout_gravity="end" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:inputType="phone"
+            android:ems="10"
+            android:hint="@string/server_ip_hint"
+            android:id="@+id/server_ip"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/server_ip_port"
+            android:layout_gravity="end" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:inputType="number"
+            android:text="@string/server_ip_default_port"
+            android:ems="10"
+            android:id="@+id/server_port"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/server_ip_password"
+            android:layout_gravity="end" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:inputType="textPassword"
+            android:hint="@string/server_password_hint"
+            android:ems="10"
+            android:id="@+id/server_password"/>
+    </GridLayout>
+
+    <CheckBox
+        android:text="@string/server_remember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:id="@+id/server_remember_checkbox" />
+
+    <Button
+        android:text="@string/server_connect_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:id="@+id/server_connect_button" />
+
+
+</LinearLayout>

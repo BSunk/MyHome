@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bsunk.myhome">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,12 +17,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".service.ConfigDataPullService"
-            android:exported="false"/>
+
+        <service
+            android:name=".service.ConfigDataPullService"
+            android:exported="false" />
+
         <provider
+            android:name=".data.MyHomeProvider"
             android:authorities="com.bsunk.myhome"
-            android:name="com.bsunk.myhome.data.MyHomeProvider"
-            android:exported="false"/>
+            android:exported="false" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bsunk.myhome.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
