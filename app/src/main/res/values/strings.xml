@@ -15,13 +15,14 @@
     <string name="nav_drawer_categories">Categories</string>
 
     <!--LoginActivity-->
-    <string name="server_title">Enter your server information to connect HomeAssistant.</string>
+    <string name="server_title">Enter your server information to connect to HomeAssistant.</string>
     <string name="server_ip_hint">192.168.1.100</string>
-    <string name="server_ip_title">IP Address:</string>
+    <string name="server_ip_title">Server Address:</string>
     <string name="server_ip_port">Port:</string>
     <string name="server_ip_default_port">8123</string>
+    <string name="server_ip_port_hint">Default is 8123</string>
     <string name="server_ip_password">Password:</string>
-    <string name="server_password_hint">Leave blank if no password</string>
+    <string name="server_password_hint">Leave blank if no password.</string>
     <string name="server_remember">Remember password</string>
     <string name="server_connect_button">Connect!</string>
 

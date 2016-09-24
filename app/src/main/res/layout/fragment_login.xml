@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:inputType="phone"
+            android:inputType="textNoSuggestions|text"
             android:ems="10"
             android:hint="@string/server_ip_hint"
             android:id="@+id/server_ip"/>
@@ -59,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:inputType="number"
+            android:hint="@string/server_ip_port_hint"
             android:text="@string/server_ip_default_port"
             android:ems="10"
             android:id="@+id/server_port"/>
@@ -76,7 +77,6 @@
             android:layout_marginTop="10dp"
             android:inputType="textPassword"
             android:hint="@string/server_password_hint"
-            android:ems="10"
             android:id="@+id/server_password"/>
     </GridLayout>
 
@@ -94,6 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
+        android:background="@color/colorAccent"
         android:id="@+id/server_connect_button" />
 
 
