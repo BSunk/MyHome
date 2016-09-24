@@ -25,6 +25,11 @@
     <string name="server_password_hint">Leave blank if no password.</string>
     <string name="server_remember">Remember password</string>
     <string name="server_connect_button">Connect!</string>
+    <string name="progress_connecting">Connecting</string>
+    <string name="progress_connecting_message">Please wait while checking connection.</string>
+    <string name="connect_error_dialog">Unable to connect. Please check your settings and try again.</string>
+    <string name="connect_success_toast">Connected successfully.</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_login">Connect to Server</string>

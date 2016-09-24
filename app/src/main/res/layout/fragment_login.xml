@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/server_title"
-        android:layout_gravity="start" />
+        android:gravity="center" />
 
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -79,14 +79,6 @@
             android:hint="@string/server_password_hint"
             android:id="@+id/server_password"/>
     </GridLayout>
-
-    <CheckBox
-        android:text="@string/server_remember"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center"
-        android:id="@+id/server_remember_checkbox" />
 
     <Button
         android:text="@string/server_connect_button"
