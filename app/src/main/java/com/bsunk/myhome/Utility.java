@@ -20,7 +20,7 @@ public class Utility {
         editor.putString(IP_KEY, ip);
         editor.putString(PORT_KEY, port);
         editor.putString(PW_KEY,pw);
-        editor.apply();
+        editor.commit();
     }
 
 }

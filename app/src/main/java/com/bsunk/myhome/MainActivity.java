@@ -1,12 +1,8 @@
 package com.bsunk.myhome;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.graphics.drawable.Drawable;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -14,7 +10,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -24,14 +19,12 @@ import com.bsunk.myhome.service.ConfigDataPullService;
 import com.bsunk.myhome.service.EventSourceConnection;
 import com.tylerjroach.eventsource.EventSource;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.R.attr.data;
 import static com.bsunk.myhome.data.MyHomeContract.MyHome.CONTENT_URI;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,14 +47,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String name = preferences.getString("ip", "");
-        if(name=="") {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
-
 
         setSupportActionBar(mToolbar);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
@@ -99,29 +84,39 @@ public class MainActivity extends AppCompatActivity {
                 String title = item.getTitle().toString();
                 if(title.equals(ConfigDataPullService.TYPE[0])) {
                     NAV_PAGE = MainActivityFragment.SENSORS_LOADER;
+                    toolbarTitle.setText(item.getTitle());
+                    switchFragment();
                 }
                 else if(title.equals(ConfigDataPullService.TYPE[1])) {
                     NAV_PAGE = MainActivityFragment.LIGHTS_LOADER;
+                    toolbarTitle.setText(item.getTitle());
+                    switchFragment();
                 }
                 else if(title.equals(ConfigDataPullService.TYPE[2])) {
                     NAV_PAGE = MainActivityFragment.MP_LOADER;
+                    switchFragment();
                 }
-                else if(title.equals("Home")) {
+                else if(title.equals(getString(R.string.nav_drawer_home))) {
                     NAV_PAGE = MainActivityFragment.ALL_LOADER;
+                    switchFragment();
                 }
-
-                toolbarTitle.setText(item.getTitle());
-                MainActivityFragment fragment = new MainActivityFragment();
-                Bundle args = new Bundle();
-                args.putInt(TYPE_KEY, NAV_PAGE);
-                fragment.setArguments(args);
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.main_fragment_container, fragment)
-                        .commit();
-
+                else if(title.equals(getString(R.string.nav_drawer_settings))) {
+                    Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                    startActivity(intent);
+                }
                 return false;
             }
         });
+    }
+
+    public void switchFragment() {
+        MainActivityFragment fragment = new MainActivityFragment();
+        Bundle args = new Bundle();
+        args.putInt(TYPE_KEY, NAV_PAGE);
+        fragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.main_fragment_container, fragment)
+                .commit();
     }
 
     @Override

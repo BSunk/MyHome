@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,7 @@ public class LoginActivityFragment extends Fragment implements View.OnClickListe
         ButterKnife.bind(this, rootView);
 
         //Set current connection values from SharedPreferences if available.
-        SharedPreferences prefs = getActivity().getPreferences(MODE_PRIVATE);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         String ip = prefs.getString(Utility.IP_KEY, "");
         String port = prefs.getString(Utility.PORT_KEY, getString(R.string.server_ip_default_port));
         String pw = prefs.getString(Utility.PW_KEY, "");
