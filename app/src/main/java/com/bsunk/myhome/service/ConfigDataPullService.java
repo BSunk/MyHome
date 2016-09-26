@@ -2,14 +2,19 @@ package com.bsunk.myhome.service;
 
 import android.app.IntentService;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bsunk.myhome.R;
+import com.bsunk.myhome.Utility;
 import com.bsunk.myhome.data.MyHomeContract;
 import com.bsunk.myhome.helper.MySingleton;
 
@@ -17,20 +22,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.Map;
+import android.os.Handler;
 /**
  * Created by Bharat on 9/11/2016.
  */
+//IntentService class that retrieves all the data from the server.
+
 public class ConfigDataPullService extends IntentService {
 
     RequestQueue mRequestQueue;
     String LOG_TAG = ConfigDataPullService.class.getName();
+    Handler mHandler;
 
     public static final String[] TYPE = {"Sensors", "Lights", "Media Players"};
 
     public ConfigDataPullService() {
         super("ConfigDataPullService");
+        mHandler = new Handler();
     }
 
     @Override
@@ -41,48 +51,57 @@ public class ConfigDataPullService extends IntentService {
     }
 
     public void getData() {
-        String url = "http://192.168.10.101:8123/api/bootstrap";
+        String url;
+        String baseURL = Utility.buildConnectionBaseURL(getApplicationContext());
+        final String pw = Utility.getPW(getApplicationContext());
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        //Log.v(LOG_TAG, response.toString());
-                        eraseDBs();
-                        try {
-                            JSONArray states = response.getJSONArray("states");
-                            for(int i=0;i<states.length();i++) {
-                                JSONObject entity = states.getJSONObject(i);
-                                if(entity.getString("entity_id").contains("sensor.")) {
-                                    getSensorData(entity);
-                                }
-                                else if(entity.getString("entity_id").contains("media_player.")) {
-                                    getMediaPlayerData(entity);
-                                }
-                                else if(entity.getString("entity_id").contains("light.")) {
-                                    getLightsData(entity);
-                                }
-                                else if(entity.getString("entity_id").contains("group.")) {
+        if (baseURL!=null) {
+            url = baseURL + "/api/bootstrap";
 
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            eraseDBs();
+                            try {
+                                JSONArray states = response.getJSONArray("states");
+                                for (int i = 0; i < states.length(); i++) {
+                                    JSONObject entity = states.getJSONObject(i);
+                                    if (entity.getString("entity_id").contains("sensor.")) {
+                                        getSensorData(entity);
+                                    } else if (entity.getString("entity_id").contains("media_player.")) {
+                                        getMediaPlayerData(entity);
+                                    } else if (entity.getString("entity_id").contains("light.")) {
+                                        getLightsData(entity);
+                                    } else if (entity.getString("entity_id").contains("group.")) {
+
+                                    }
                                 }
+                            } catch (JSONException e) {
+                                Log.e(LOG_TAG, e.toString());
                             }
                         }
-                        catch(JSONException e) {
-                            Log.e(LOG_TAG, e.toString());
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e(LOG_TAG, error.getMessage());
+                            mHandler.post(new DisplayToast(getApplicationContext(), getString(R.string.connection_failed_dialog)));
                         }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e(LOG_TAG, error.getMessage());
-
-                    }
-                });
-
-        mRequestQueue.add(jsObjRequest);
+                    }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("x-ha-access", pw);
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+            };
+            mRequestQueue.add(jsObjRequest);
+        }
+        else {
+            mHandler.post(new DisplayToast(this, getString(R.string.connection_failed_dialog)));
+        }
     }
-
 
     private void getLightsData(JSONObject entity) {
         ContentValues lightsValues = new ContentValues();
@@ -162,4 +181,15 @@ public class ConfigDataPullService extends IntentService {
         getApplicationContext().getContentResolver().delete(MyHomeContract.MyHome.CONTENT_URI, null, null);
     }
 
+    public class DisplayToast implements Runnable {
+        private final Context mContext;
+        String mText;
+        public DisplayToast(Context mContext, String text){
+            this.mContext = mContext;
+            mText = text;
+        }
+        public void run(){
+            Toast.makeText(mContext, mText, Toast.LENGTH_SHORT).show();
+        }
+    }
 }

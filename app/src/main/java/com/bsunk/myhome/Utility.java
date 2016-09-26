@@ -20,7 +20,25 @@ public class Utility {
         editor.putString(IP_KEY, ip);
         editor.putString(PORT_KEY, port);
         editor.putString(PW_KEY,pw);
-        editor.commit();
+        editor.apply();
+    }
+
+    public static String buildConnectionBaseURL(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String ip = prefs.getString(Utility.IP_KEY, null);
+        String port = prefs.getString(Utility.PORT_KEY, context.getString(R.string.server_ip_default_port));
+
+        if(ip!=null) {
+            return "http://" + ip + ":" + port + "";
+        }
+        else {
+            return null;
+        }
+    }
+
+    public static String getPW(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(Utility.PW_KEY, "");
     }
 
 }

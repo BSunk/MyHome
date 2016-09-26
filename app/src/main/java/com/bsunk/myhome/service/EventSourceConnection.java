@@ -103,5 +103,6 @@ public class EventSourceConnection implements EventSourceHandler {
     public void onClosed(boolean willReconnect) {
         Log.v("SSE Closed", "reconnect? " + willReconnect);
     }
+
 }
 

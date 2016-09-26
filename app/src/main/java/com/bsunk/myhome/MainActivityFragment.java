@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.bsunk.myhome.data.MyHomeContract;
 import com.bsunk.myhome.service.ConfigDataPullService;
@@ -26,6 +28,9 @@ import butterknife.ButterKnife;
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @BindView(R.id.entity_recyclerview) RecyclerView EntityRecyclerView;
+    @BindView(R.id.settings_button) Button settingsButton;
+    @BindView(R.id.empty_list_textview) TextView emptyListTextView;
+
     StaggeredGridLayoutManager sglm;
     EntityAdapter adapter;
     int LOADER;
@@ -82,6 +87,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         adapter.swapCursor(cursor);
+        if(cursor.getCount()==0) {
+            emptyListTextView.setVisibility(View.VISIBLE);
+            settingsButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            emptyListTextView.setVisibility(View.INVISIBLE);
+            settingsButton.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
