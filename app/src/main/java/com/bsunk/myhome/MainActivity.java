@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.bsunk.myhome.data.MyHomeContract;
@@ -31,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
     private EventSourceConnection sseHandler = new EventSourceConnection(this);
     private EventSource eventSource;
-    String eventUrl = "http://192.168.10.101:8123/api/stream";
-    Map<String, String> extraHeaderParameters = new HashMap<>();
     public static final String TYPE_KEY = "type";
     static final String NAV_PAGE_KEY = "page";
     int NAV_PAGE=0;
@@ -51,8 +50,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
                 this,  drawerLayout, mToolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        );
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+
         drawerLayout.setDrawerListener(mDrawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -75,48 +78,59 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.main_fragment_container, fragment)
                 .commit();
 
-        setNavigationViewItems();
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 drawerLayout.closeDrawers();
-                String title = item.getTitle().toString();
-                if(title.equals(ConfigDataPullService.TYPE[0])) {
-                    NAV_PAGE = MainActivityFragment.SENSORS_LOADER;
-                    toolbarTitle.setText(item.getTitle());
-                    switchFragment();
-                }
-                else if(title.equals(ConfigDataPullService.TYPE[1])) {
-                    NAV_PAGE = MainActivityFragment.LIGHTS_LOADER;
-                    toolbarTitle.setText(item.getTitle());
-                    switchFragment();
-                }
-                else if(title.equals(ConfigDataPullService.TYPE[2])) {
-                    NAV_PAGE = MainActivityFragment.MP_LOADER;
-                    switchFragment();
-                }
-                else if(title.equals(getString(R.string.nav_drawer_home))) {
-                    NAV_PAGE = MainActivityFragment.ALL_LOADER;
-                    switchFragment();
-                }
-                else if(title.equals(getString(R.string.nav_drawer_settings))) {
-                    Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                    startActivity(intent);
+                MainActivityFragment fragment = new MainActivityFragment();
+                Bundle args = new Bundle();
+
+                switch(item.getItemId()) {
+                    case R.id.nav_home:
+                        NAV_PAGE = MainActivityFragment.ALL_LOADER;
+                        toolbarTitle.setText(item.getTitle());
+                        args.putInt(TYPE_KEY, NAV_PAGE);
+                        fragment.setArguments(args);
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.main_fragment_container, fragment)
+                                .commit();
+                        return true;
+                    case R.id.sensors_nav:
+                        NAV_PAGE = MainActivityFragment.SENSORS_LOADER;
+                        toolbarTitle.setText(item.getTitle());
+                        args.putInt(TYPE_KEY, NAV_PAGE);
+                        fragment.setArguments(args);
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.main_fragment_container, fragment)
+                                .commit();
+                        return true;
+                    case R.id.lights_nav:
+                        NAV_PAGE = MainActivityFragment.LIGHTS_LOADER;
+                        toolbarTitle.setText(item.getTitle());
+                        args.putInt(TYPE_KEY, NAV_PAGE);
+                        fragment.setArguments(args);
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.main_fragment_container, fragment)
+                                .commit();
+                        return true;
+                    case R.id.mp_nav:
+                        NAV_PAGE = MainActivityFragment.MP_LOADER;
+                        toolbarTitle.setText(item.getTitle());
+                        args.putInt(TYPE_KEY, NAV_PAGE);
+                        fragment.setArguments(args);
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.main_fragment_container, fragment)
+                                .commit();
+                        return true;
+                    case R.id.nav_settings:
+                        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                        startActivity(intent);
+                        return true;
                 }
                 return false;
             }
         });
-    }
 
-    public void switchFragment() {
-        MainActivityFragment fragment = new MainActivityFragment();
-        Bundle args = new Bundle();
-        args.putInt(TYPE_KEY, NAV_PAGE);
-        fragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.main_fragment_container, fragment)
-                .commit();
     }
 
     @Override
@@ -124,44 +138,6 @@ public class MainActivity extends AppCompatActivity {
         savedInstanceState.putInt(NAV_PAGE_KEY, NAV_PAGE);
         savedInstanceState.putCharSequence("toolbar_title", toolbarTitle.getText());
         super.onSaveInstanceState(savedInstanceState);
-    }
-
-    public void setNavigationViewItems() {
-        Menu menu = navigationView.getMenu();
-
-        for(int i=0;i<ConfigDataPullService.TYPE.length;i++) {
-            Cursor c = getContentResolver().query(CONTENT_URI, null, MyHomeContract.MyHome.COLUMN_TYPE + " = " + DatabaseUtils.sqlEscapeString(ConfigDataPullService.TYPE[i]), null, null);
-            if(c.getCount() != 0) {
-                String type = ConfigDataPullService.TYPE[i].replaceAll("\\s","").toLowerCase();
-                int id = getResourceId(type, "drawable", getPackageName());
-                menu.add(R.id.drawer_group_two, Menu.FLAG_APPEND_TO_GROUP, 1, ConfigDataPullService.TYPE[i]).setIcon(id);
-            }
-        }
-    }
-
-    public int getResourceId(String pVariableName, String pResourcename, String pPackageName)
-    {
-        try {
-            return getResources().getIdentifier(pVariableName, pResourcename, pPackageName);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return super.onOptionsItemSelected(item);
     }
 
     protected void onPause() {
@@ -176,13 +152,27 @@ public class MainActivity extends AppCompatActivity {
         startService(service);
     }
 
+    public void settingsOnClick(View view) {
+        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+        startActivity(intent);
+    }
+
     private void startEventSource() {
-        //extraHeaderParameters.put("Content-Type", "application/json");
-        eventSource = new EventSource.Builder(eventUrl)
-                .eventHandler(sseHandler)
-            //    .headers(extraHeaderParameters)
-                .build();
-        eventSource.connect();
+        String url;
+        String baseURL = Utility.buildConnectionBaseURL(getApplicationContext());
+        final String pw = Utility.getPW(getApplicationContext());
+
+        if (baseURL!=null) {
+            url = baseURL + "/api/stream";
+            Map<String, String> extraHeaderParameters = new HashMap<>();
+            extraHeaderParameters.put("Content-Type", "application/json");
+            extraHeaderParameters.put("x-ha-access", pw);
+            eventSource = new EventSource.Builder(url)
+                    .eventHandler(sseHandler)
+                    .headers(extraHeaderParameters)
+                    .build();
+            eventSource.connect();
+        }
     }
 
     private void stopEventSource() {

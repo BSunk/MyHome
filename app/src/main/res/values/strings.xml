@@ -12,6 +12,9 @@
     <string name="nav_drawer_about">About</string>
     <string name="nav_drawer_other">Other</string>
     <string name="nav_drawer_categories">Categories</string>
+    <string name="nav_drawer_sensors">Sensors</string>
+    <string name="nav_drawer_lights">Lights</string>
+    <string name="nav_drawer_mp">Media Players</string>
 
     <!--LoginActivity-->
     <string name="server_title">Enter your server information to connect to HomeAssistant.</string>
