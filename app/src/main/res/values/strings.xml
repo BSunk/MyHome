@@ -2,6 +2,7 @@
     <string name="app_name">My Home</string>
 
     <string name="initial_light_brightness">0%</string>
+    <string name="initial_light_colortemp">154 M</string>
     <string name="light_off">OFF</string>
     <string name="navigation_drawer_open">Navigation drawer open</string>
     <string name="navigation_drawer_close">Navigation drawer close</string>
@@ -41,7 +42,13 @@
     <string name='connection_failed_dialog'>Failed to connect to server. Please check server settings.</string>
     <string name="connection_failed_button">Settings</string>
 
-    <string name="empty_list">No items to display. Please check connection settings.</string>
-    <string name="settings_button">Settings</string>
+    <string name="empty_list">No items to display.</string>
+
+    <!--Light Dialog Fragment-->
+    <string name="light_brightness_label">Brightness</string>
+    <string name="light_colortemp_label">Color Temperature</string>
+
+    <!--Content Descriptions-->
+    <string name="light_toggle_content_description">Toggle light switch</string>
 
 </resources>

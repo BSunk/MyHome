@@ -28,7 +28,6 @@ import butterknife.ButterKnife;
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @BindView(R.id.entity_recyclerview) RecyclerView EntityRecyclerView;
-    @BindView(R.id.settings_button) Button settingsButton;
     @BindView(R.id.empty_list_textview) TextView emptyListTextView;
 
     StaggeredGridLayoutManager sglm;
@@ -89,11 +88,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         adapter.swapCursor(cursor);
         if(cursor.getCount()==0) {
             emptyListTextView.setVisibility(View.VISIBLE);
-            settingsButton.setVisibility(View.VISIBLE);
         }
         else {
             emptyListTextView.setVisibility(View.INVISIBLE);
-            settingsButton.setVisibility(View.INVISIBLE);
         }
     }
 

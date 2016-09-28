@@ -9,4 +9,5 @@
     <color name="lights_cardview_background">#4e342e</color>
     <color name="sensors_cardview_background">#78909c</color>
     <color name="text_color_light">#cbd1d4</color>
+    <color name="nav_background">#263238</color>
 </resources>

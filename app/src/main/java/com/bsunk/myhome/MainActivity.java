@@ -1,8 +1,6 @@
 package com.bsunk.myhome;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -10,12 +8,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bsunk.myhome.data.MyHomeContract;
 import com.bsunk.myhome.service.ConfigDataPullService;
 import com.bsunk.myhome.service.EventSourceConnection;
 import com.tylerjroach.eventsource.EventSource;
@@ -25,8 +21,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.bsunk.myhome.data.MyHomeContract.MyHome.CONTENT_URI;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         args.putInt(TYPE_KEY, NAV_PAGE);
         fragment.setArguments(args);
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.main_fragment_container, fragment)
+                .add(R.id.main_fragment_container, fragment, "home")
                 .commit();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -92,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         args.putInt(TYPE_KEY, NAV_PAGE);
                         fragment.setArguments(args);
                         getSupportFragmentManager().beginTransaction()
-                                .add(R.id.main_fragment_container, fragment)
+                                .replace(R.id.main_fragment_container, fragment, "home")
                                 .commit();
                         return true;
                     case R.id.sensors_nav:
@@ -101,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                         args.putInt(TYPE_KEY, NAV_PAGE);
                         fragment.setArguments(args);
                         getSupportFragmentManager().beginTransaction()
-                                .add(R.id.main_fragment_container, fragment)
+                                .replace(R.id.main_fragment_container, fragment, "sensors")
                                 .commit();
                         return true;
                     case R.id.lights_nav:
@@ -110,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                         args.putInt(TYPE_KEY, NAV_PAGE);
                         fragment.setArguments(args);
                         getSupportFragmentManager().beginTransaction()
-                                .add(R.id.main_fragment_container, fragment)
+                                .replace(R.id.main_fragment_container, fragment, "lights")
                                 .commit();
                         return true;
                     case R.id.mp_nav:
@@ -119,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                         args.putInt(TYPE_KEY, NAV_PAGE);
                         fragment.setArguments(args);
                         getSupportFragmentManager().beginTransaction()
-                                .add(R.id.main_fragment_container, fragment)
+                                .replace(R.id.main_fragment_container, fragment, "mp")
                                 .commit();
                         return true;
                     case R.id.nav_settings:
@@ -150,11 +144,6 @@ public class MainActivity extends AppCompatActivity {
         startEventSource();
         Intent service = new Intent(this, ConfigDataPullService.class);
         startService(service);
-    }
-
-    public void settingsOnClick(View view) {
-        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-        startActivity(intent);
     }
 
     private void startEventSource() {

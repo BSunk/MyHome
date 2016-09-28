@@ -23,7 +23,7 @@
             android:orderInCategory="1"
             android:id="@+id/drawer_group_two">
             <menu>
-                <group android:checkableBehavior="single">
+                <group>
                     <item android:id="@+id/sensors_nav"
                         android:icon="@drawable/sensors"
                         android:title="@string/nav_drawer_sensors" />
