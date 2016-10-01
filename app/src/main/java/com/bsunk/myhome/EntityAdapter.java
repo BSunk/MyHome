@@ -40,7 +40,7 @@ public class EntityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (viewType == LIGHT_TYPE) {
             v = LayoutInflater.from(viewGroup.getContext())
                     .inflate(R.layout.light_item, viewGroup, false);
-            return new LightsViewHolder(v);
+            return new LightsViewHolder(v, mContext);
         }
         else if (viewType == SENSOR_TYPE){
             v = LayoutInflater.from(viewGroup.getContext())

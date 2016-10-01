@@ -47,6 +47,7 @@
     <!--Light Dialog Fragment-->
     <string name="light_brightness_label">Brightness</string>
     <string name="light_colortemp_label">Color Temperature</string>
+    <string name="light_choose_color">Color Picker</string>
 
     <!--Content Descriptions-->
     <string name="light_toggle_content_description">Toggle light switch</string>

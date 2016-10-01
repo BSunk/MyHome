@@ -1,105 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_marginTop="10dp"
-    android:layout_marginStart="5dp"
-    android:layout_marginEnd="5dp"
     app:cardCornerRadius="2dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lights_cardview_background"
         android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
-        <TextView
-            android:id="@+id/dialog_light_name_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bedroom Light"
-            android:textSize="20sp"
-            android:layout_centerInParent="true" />
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:tint="@color/bulb_off"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            app:srcCompat="@drawable/ic_lightbulb_outline_black_24dp"
-            android:id="@+id/light_bulb_imageView"
-            android:layout_marginStart="10dp"
-            android:layout_alignParentStart="true"
-            android:contentDescription="@string/light_toggle_content_description"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/light_brightness_group"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/lights_cardview_background">
-
-        <TextView
-            android:id="@+id/dialog_light_brightness"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="18sp"
-            android:textColor="@color/text_color_light"
-            android:text="@string/initial_light_brightness"
-            android:layout_alignParentTop="true"
-            android:layout_centerInParent="true"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp" />
-
-        <android.support.v7.widget.AppCompatSeekBar
-            android:id="@+id/dialog_light_seek_bar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="40dp"
-            android:paddingEnd="40dp"
-            android:max="255"
-            android:layout_centerInParent="false"
-            android:layout_alignWithParentIfMissing="false"
-            android:layout_alignBaseline="@+id/dialog_light_brightness"
-            android:layout_alignBottom="@+id/dialog_light_brightness"
-            android:paddingBottom="5dp"
+            android:layout_height="match_parent"
+            android:background="@color/cardview_dark_background"
             android:paddingTop="5dp"
-            android:layout_centerHorizontal="true" />
+            android:paddingBottom="5dp">
+            <TextView
+                android:id="@+id/dialog_light_name_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bedroom Light"
+                android:transitionName="light_title_transition"
+                android:textSize="20sp"
+                android:layout_centerInParent="true" />
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:tint="@color/bulb_off"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                app:srcCompat="@drawable/ic_lightbulb_outline_black_24dp"
+                android:id="@+id/light_bulb_imageView"
+                android:layout_marginStart="5dp"
+                android:layout_alignParentStart="true"
+                android:contentDescription="@string/light_toggle_content_description"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_color_light"
-            android:text="@string/light_brightness_label"
-            android:layout_alignBaseline="@+id/dialog_light_seek_bar"
-            android:layout_alignParentBottom="false"
-            android:layout_below="@+id/dialog_light_seek_bar"
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:tint="@color/bulb_off"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                app:srcCompat="@drawable/ic_close_black_24dp"
+                android:id="@+id/light_close_dialog"
+                android:layout_marginEnd="5dp"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/light_brightness_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:id="@+id/dialog_light_brightness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/text_color_light"
+                android:text="@string/initial_light_brightness"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/dialog_light_seek_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:max="255"
+                android:layout_centerInParent="false"
+                android:layout_alignWithParentIfMissing="false"
+                android:layout_alignBaseline="@+id/dialog_light_brightness"
+                android:layout_alignBottom="@+id/dialog_light_brightness"
+                android:paddingBottom="2dp"
+                android:paddingTop="5dp"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color_light"
+                android:text="@string/light_brightness_label"
+                android:layout_alignBaseline="@+id/dialog_light_seek_bar"
+                android:layout_alignParentBottom="false"
+                android:layout_below="@+id/dialog_light_seek_bar"
+                android:paddingTop="2dp"
+                android:paddingBottom="5dp"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"/>
+
 
         <RelativeLayout
             android:id="@+id/light_colortemp_group"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:background="@color/lights_cardview_background">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_height="1dp"
-                android:background="@color/colorAccent"/>
+            android:paddingBottom="5dp">
 
             <TextView
                 android:id="@+id/dialog_light_colortemp"
@@ -125,7 +140,7 @@
                 android:layout_alignWithParentIfMissing="false"
                 android:layout_alignBaseline="@+id/dialog_light_colortemp"
                 android:layout_alignBottom="@+id/dialog_light_colortemp"
-                android:paddingBottom="5dp"
+                android:paddingBottom="2dp"
                 android:paddingTop="5dp"
                 android:layout_centerHorizontal="true" />
 
@@ -137,15 +152,25 @@
                 android:layout_alignBaseline="@+id/dialog_colortemp_seek_bar"
                 android:layout_alignParentBottom="false"
                 android:layout_below="@+id/dialog_colortemp_seek_bar"
-                android:paddingTop="5dp"
+                android:paddingTop="2dp"
                 android:paddingBottom="5dp"
                 android:layout_centerHorizontal="true" />
-            </RelativeLayout>
+        </RelativeLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"/>
 
-
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/light_choose_color"/>
 
 
     </LinearLayout>
 </android.support.v7.widget.CardView>
+</RelativeLayout>
